@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DISASTER.prep — Drill Simulation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NDMA Banner -->
+  <div class="ndma-banner">
+    <img src="ndmalogo.png" alt="NDMA Logo"/>
+    <div class="ndma-content">
+      <h1>National Disaster Management Authority</h1>
+      <h2>Government of India</h2>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand"><a href="index.html">DISASTER.prep</a></div>
+      <div class="auth">
+        <a href="students.html" class="btn btn-outline" id="back-btn">← Back</a>
+        <a href="#" class="btn btn-logout" id="logout-btn">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Drill Hero Section -->
+    <section class="drill-hero">
+      <div class="drill-hero-content">
+        <div class="drill-hero-text">
+          <h1 class="drill-title" id="drill-title">Disaster Drill Simulation</h1>
+          <p class="drill-subtitle" id="drill-subtitle">Test your preparedness knowledge in a realistic scenario</p>
+          <div class="drill-progress">
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+            <span class="progress-text" id="progress-text">Step 1 of 3</span>
+          </div>
+        </div>
+        <div class="drill-hero-visual">
+          <div class="drill-animation" id="drill-animation">
+            <div class="disaster-icon" id="disaster-icon">🌍</div>
+            <div class="animation-particles" id="animation-particles"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Drill Content Section -->
+    <section class="drill-content-section">
+      <div class="drill-container">
+        <div class="drill-card" id="drill-card">
+          <div class="drill-scenario" id="drill-scenario">
+            <div class="scenario-icon">⚠️</div>
+            <h3 class="scenario-title">Scenario</h3>
+            <p class="scenario-text" id="scenario-text">Loading drill...</p>
+          </div>
+          
+          <div class="drill-choices" id="drill-choices">
+            <!-- Choices will be populated here -->
+          </div>
+          
+          <div class="drill-feedback" id="drill-feedback">
+            <!-- Feedback will be shown here -->
+          </div>
+          
+          <div class="drill-actions" id="drill-actions" style="display: none;">
+            <button id="restart-drill" class="btn btn-secondary">🔄 Restart Drill</button>
+            <a href="students.html" class="btn btn-primary" id="finish-drill">✅ Finish & Return</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">© <span id="year3"></span> DISASTER.prep — Drill Simulation</footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year3').innerText = new Date().getFullYear();
+
+    // Professional drill templates with enhanced scenarios
+    const DRILL_TEMPLATES = {
+      earthquake: {
+        title: 'Earthquake Safety Drill',
+        subtitle: 'Learn proper earthquake response procedures',
+        icon: '🌍',
+        color: '#f59e0b',
+        steps: [
+          { 
+            text: 'You feel the ground shaking violently. Your desk is shaking and items are falling. What is your immediate action?', 
+            choices: [
+              {id:'a', text:'Drop, Cover, and Hold On under your desk', correct:true, explanation:'The "Drop, Cover, and Hold On" technique is the safest way to protect yourself during an earthquake.'},
+              {id:'b', text:'Run to the nearest exit immediately', correct:false, explanation:'Running during an earthquake is dangerous as you may fall or be hit by falling objects.'},
+              {id:'c', text:'Stand in a doorway for protection', correct:false, explanation:'Doorways are not safer than other parts of the building and may not provide adequate protection.'},
+              {id:'d', text:'Grab your belongings and wait', correct:false, explanation:'Your safety is more important than belongings. Focus on protecting yourself first.'}
+            ]
+          },
+          { 
+            text: 'The shaking has stopped. Your teacher instructs the class to evacuate. How should you proceed?', 
+            choices: [
+              {id:'a', text:'Exit in an orderly single file line', correct:true, explanation:'Orderly evacuation prevents panic and ensures everyone can exit safely.'},
+              {id:'b', text:'Run quickly to be first out', correct:false, explanation:'Rushing can cause injuries and block exits for others.'},
+              {id:'c', text:'Wait for everyone else to leave first', correct:false, explanation:'Follow evacuation procedures promptly but don\'t delay unnecessarily.'},
+              {id:'d', text:'Take the nearest exit regardless of the designated route', correct:false, explanation:'Always follow the designated evacuation route for your safety.'}
+            ]
+          },
+          { 
+            text: 'You\'re outside in the designated assembly area. What should you do next?', 
+            choices: [
+              {id:'a', text:'Stay in the assembly area and wait for further instructions', correct:true, explanation:'Remain in the designated safe area until authorities give the all-clear.'},
+              {id:'b', text:'Go back inside to check on your belongings', correct:false, explanation:'Never re-enter a building after an earthquake until it\'s declared safe.'},
+              {id:'c', text:'Call your parents immediately', correct:false, explanation:'Phone lines may be overloaded. Wait for the emergency to pass before making calls.'},
+              {id:'d', text:'Leave the school grounds to go home', correct:false, explanation:'Stay with your group and follow official instructions for your safety.'}
+            ]
+          }
+        ]
+      },
+      flood: {
+        title: 'Flood Evacuation Drill',
+        subtitle: 'Master flood safety and evacuation procedures',
+        icon: '🌊',
+        color: '#3b82f6',
+        steps: [
+          { 
+            text: 'Heavy rain has been falling for hours and water is rising around your school. What should you do?', 
+            choices: [
+              {id:'a', text:'Move to the highest floor or roof', correct:true, explanation:'Seek higher ground immediately when floodwaters are rising.'},
+              {id:'b', text:'Go to the basement for safety', correct:false, explanation:'Basements flood first and can become death traps.'},
+              {id:'c', text:'Stay in your classroom and wait', correct:false, explanation:'Don\'t wait - floodwaters can rise rapidly and unexpectedly.'},
+              {id:'d', text:'Try to drive home immediately', correct:false, explanation:'Never drive through floodwaters - most flood deaths occur in vehicles.'}
+            ]
+          },
+          { 
+            text: 'You must evacuate the building. What items should you prioritize?', 
+            choices: [
+              {id:'a', text:'Take your emergency kit and essential documents only', correct:true, explanation:'Focus on survival essentials - other items can be replaced.'},
+              {id:'b', text:'Gather all your personal belongings', correct:false, explanation:'Time is critical during evacuation - only take essentials.'},
+              {id:'c', text:'Take your electronic devices and chargers', correct:false, explanation:'Electronics are not essential for survival during evacuation.'},
+              {id:'d', text:'Leave everything and run immediately', correct:false, explanation:'Take your emergency kit if you have time - it contains vital supplies.'}
+            ]
+          },
+          { 
+            text: 'You encounter floodwater on your evacuation route. How should you proceed?', 
+            choices: [
+              {id:'a', text:'Turn around and find an alternate route', correct:true, explanation:'Never walk or drive through floodwater - find a safer path.'},
+              {id:'b', text:'Walk through the shallowest part', correct:false, explanation:'Even shallow water can be dangerous and hide hazards.'},
+              {id:'c', text:'Wait for the water to recede', correct:false, explanation:'Don\'t wait - find an alternative route immediately.'},
+              {id:'d', text:'Call for help and stay put', correct:false, explanation:'Keep moving to safety while calling for help if needed.'}
+            ]
+          }
+        ]
+      },
+      fire: {
+        title: 'Fire Safety Drill',
+        subtitle: 'Learn fire prevention and evacuation techniques',
+        icon: '🔥',
+        color: '#ef4444',
+        steps: [
+          { 
+            text: 'You see smoke coming from the hallway. What is your first action?', 
+            choices: [
+              {id:'a', text:'Stay low and feel the door before opening', correct:true, explanation:'Smoke rises, so stay low. Check if the door is hot before opening.'},
+              {id:'b', text:'Run to the nearest exit immediately', correct:false, explanation:'Always check conditions first - the nearest exit might be dangerous.'},
+              {id:'c', text:'Hide under your desk', correct:false, explanation:'Hiding is only appropriate for lockdown situations, not fires.'},
+              {id:'d', text:'Open windows to let smoke out', correct:false, explanation:'Opening windows can feed the fire with oxygen.'}
+            ]
+          },
+          { 
+            text: 'The door feels hot to touch. What should you do?', 
+            choices: [
+              {id:'a', text:'Use an alternate exit or stay in place', correct:true, explanation:'A hot door indicates fire on the other side - find another way out.'},
+              {id:'b', text:'Open the door quickly and run through', correct:false, explanation:'A hot door means fire is nearby - this is extremely dangerous.'},
+              {id:'c', text:'Pour water on the door to cool it', correct:false, explanation:'Water won\'t cool a hot door quickly enough to make it safe.'},
+              {id:'d', text:'Wait for the fire department', correct:false, explanation:'Keep looking for alternative exits while waiting for help.'}
+            ]
+          },
+          { 
+            text: 'You\'re safely outside. What should you do next?', 
+            choices: [
+              {id:'a', text:'Go to the designated assembly point and stay there', correct:true, explanation:'Report to the assembly point so authorities can account for everyone.'},
+              {id:'b', text:'Go back inside to help others', correct:false, explanation:'Never re-enter a burning building - let professionals handle rescues.'},
+              {id:'c', text:'Leave the school grounds immediately', correct:false, explanation:'Stay at the assembly point until you\'re accounted for and dismissed.'},
+              {id:'d', text:'Call your parents from your phone', correct:false, explanation:'Use the school\'s communication system first, then call parents if needed.'}
+            ]
+          }
+        ]
+      },
+      landslide: {
+        title: 'Landslide Safety Drill',
+        subtitle: 'Prepare for landslide hazards and safety procedures',
+        icon: '🏔️',
+        color: '#8b5cf6',
+        steps: [
+          { 
+            text: 'You notice signs of a potential landslide: cracks in the ground, tilting trees, and unusual sounds. What should you do?', 
+            choices: [
+              {id:'a', text:'Immediately evacuate to higher ground', correct:true, explanation:'Landslides can happen quickly - evacuate to higher, stable ground immediately.'},
+              {id:'b', text:'Stay inside and wait for official instructions', correct:false, explanation:'Don\'t wait for official warnings - evacuate immediately if you see danger signs.'},
+              {id:'c', text:'Investigate the cracks to assess the situation', correct:false, explanation:'Never investigate landslide warning signs - evacuate immediately.'},
+              {id:'d', text:'Continue with normal activities but stay alert', correct:false, explanation:'Warning signs require immediate evacuation, not just alertness.'}
+            ]
+          },
+          { 
+            text: 'You\'re evacuating and must choose a route. Which path should you take?', 
+            choices: [
+              {id:'a', text:'Take the most direct route to higher ground', correct:true, explanation:'Choose the quickest, safest path to higher, stable ground.'},
+              {id:'b', text:'Follow the same route others are taking', correct:false, explanation:'Don\'t follow crowds blindly - choose the safest route for your situation.'},
+              {id:'c', text:'Take a route that avoids steep slopes', correct:false, explanation:'Avoid steep slopes, but don\'t delay evacuation to find the perfect route.'},
+              {id:'d', text:'Wait for emergency personnel to guide you', correct:false, explanation:'Don\'t wait for guidance - evacuate immediately using your best judgment.'}
+            ]
+          },
+          { 
+            text: 'You\'ve reached higher ground. What should you do next?', 
+            choices: [
+              {id:'a', text:'Stay put and monitor the situation', correct:true, explanation:'Stay on higher ground and monitor conditions before returning.'},
+              {id:'b', text:'Return to check on your belongings', correct:false, explanation:'Never return to landslide-prone areas until authorities declare them safe.'},
+              {id:'c', text:'Try to help others who might be trapped', correct:false, explanation:'Don\'t attempt rescues - call emergency services and let professionals handle it.'},
+              {id:'d', text:'Continue moving to even higher ground', correct:false, explanation:'If you\'re on stable, high ground, stay there rather than moving unnecessarily.'}
+            ]
+          }
+        ]
+      }
+    };
+
+    // Get drill type from URL parameter
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    let drillType = getQueryParam('template') || localStorage.getItem('selectedDrillType') || 'earthquake';
+    if (!DRILL_TEMPLATES[drillType]) drillType = 'earthquake';
+    
+    // Clear the selected drill type from localStorage after using it
+    localStorage.removeItem('selectedDrillType');
+    
+    const template = DRILL_TEMPLATES[drillType];
+    let currentStep = 0;
+    let userAnswers = [];
+    let isDrillComplete = false;
+
+    // Initialize drill
+    function initDrill() {
+      document.getElementById('drill-title').textContent = template.title;
+      document.getElementById('drill-subtitle').textContent = template.subtitle;
+      document.getElementById('disaster-icon').textContent = template.icon;
+      
+      // Set theme color
+      const root = document.documentElement;
+      root.style.setProperty('--drill-theme', template.color);
+      
+      updateProgress();
+      renderCurrentStep();
+      startAnimation();
+    }
+
+    // Update progress bar
+    function updateProgress() {
+      const progress = ((currentStep + 1) / template.steps.length) * 100;
+      document.getElementById('progress-fill').style.width = `${progress}%`;
+      document.getElementById('progress-text').textContent = `Step ${currentStep + 1} of ${template.steps.length}`;
+    }
+
+    // Render current step
+    function renderCurrentStep() {
+      if (isDrillComplete) return;
+      
+      const step = template.steps[currentStep];
+      document.getElementById('scenario-text').textContent = step.text;
+      
+      const choicesContainer = document.getElementById('drill-choices');
+      choicesContainer.innerHTML = '';
+      
+      step.choices.forEach((choice, index) => {
+        const choiceElement = document.createElement('div');
+        choiceElement.className = 'choice-option';
+        choiceElement.innerHTML = `
+          <div class="choice-letter">${String.fromCharCode(65 + index)}</div>
+          <div class="choice-text">${choice.text}</div>
+        `;
+        choiceElement.addEventListener('click', () => selectChoice(choice));
+        choicesContainer.appendChild(choiceElement);
+      });
+      
+      // Clear feedback
+      document.getElementById('drill-feedback').innerHTML = '';
+    }
+
+    // Handle choice selection
+    function selectChoice(choice) {
+      if (isDrillComplete) return;
+      
+      // Disable all choices
+      document.querySelectorAll('.choice-option').forEach(el => {
+        el.style.pointerEvents = 'none';
+        el.classList.add('disabled');
+      });
+      
+      // Record answer
+      userAnswers.push({
+        choiceId: choice.id,
+        correct: choice.correct,
+        explanation: choice.explanation
+      });
+      
+      // Show feedback
+      showFeedback(choice);
+      
+      // Move to next step after delay
+      setTimeout(() => {
+        currentStep++;
+        if (currentStep < template.steps.length) {
+          updateProgress();
+          renderCurrentStep();
+        } else {
+          finishDrill();
+        }
+      }, 2000);
+    }
+
+    // Show feedback
+    function showFeedback(choice) {
+      const feedback = document.getElementById('drill-feedback');
+      const isCorrect = choice.correct;
+      
+      feedback.innerHTML = `
+        <div class="feedback-content ${isCorrect ? 'correct' : 'incorrect'}">
+          <div class="feedback-icon">${isCorrect ? '✅' : '❌'}</div>
+          <div class="feedback-text">
+            <h4>${isCorrect ? 'Correct!' : 'Incorrect'}</h4>
+            <p>${choice.explanation}</p>
+          </div>
+        </div>
+      `;
+      
+      // Highlight selected choice
+      document.querySelectorAll('.choice-option').forEach(el => {
+        if (el.textContent.includes(choice.text)) {
+          el.classList.add(isCorrect ? 'correct-choice' : 'incorrect-choice');
+        }
+      });
+    }
+
+    // Finish drill
+    function finishDrill() {
+      isDrillComplete = true;
+      const correctCount = userAnswers.filter(a => a.correct).length;
+      const score = Math.round((correctCount / template.steps.length) * 100);
+      
+      // Save results
+      const results = JSON.parse(localStorage.getItem('dp_drill_results') || '[]');
+      results.unshift({
+        id: Date.now(),
+        type: drillType,
+        score: score,
+        correctAnswers: correctCount,
+        totalQuestions: template.steps.length,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('dp_drill_results', JSON.stringify(results));
+      
+      // Show completion screen
+      document.getElementById('drill-scenario').innerHTML = `
+        <div class="completion-icon">🎉</div>
+        <h3 class="completion-title">Drill Complete!</h3>
+        <div class="score-display">
+          <div class="score-number">${score}%</div>
+          <div class="score-text">You got ${correctCount} out of ${template.steps.length} questions correct</div>
+        </div>
+      `;
+      
+      document.getElementById('drill-choices').innerHTML = '';
+      document.getElementById('drill-feedback').innerHTML = '';
+      document.getElementById('drill-actions').style.display = 'flex';
+      
+      // Update progress to 100%
+      document.getElementById('progress-fill').style.width = '100%';
+      document.getElementById('progress-text').textContent = 'Complete!';
+    }
+
+    // Start animation
+    function startAnimation() {
+      const animation = document.getElementById('drill-animation');
+      const particles = document.getElementById('animation-particles');
+      
+      // Add animation class
+      animation.classList.add('animated');
+      
+      // Create floating particles
+      for (let i = 0; i < 6; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.animationDelay = `${i * 0.5}s`;
+        particles.appendChild(particle);
+      }
+    }
+
+    // Restart drill
+    document.getElementById('restart-drill').addEventListener('click', () => {
+      currentStep = 0;
+      userAnswers = [];
+      isDrillComplete = false;
+      document.getElementById('drill-actions').style.display = 'none';
+      initDrill();
+    });
+
+    // Initialize authentication
+    initAuth();
+
+    // Clear selected drill type on logout
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', (e) => {
+        localStorage.removeItem('selectedDrillType');
+      });
+    }
+
+    // Start the drill
+    initDrill();
+  </script>
+</body>
+</html>

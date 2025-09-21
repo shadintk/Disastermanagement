@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DISASTER.prep — Emergency Reporting</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NDMA Banner -->
+  <div class="ndma-banner">
+    <img src="ndmalogo.png" alt="NDMA Logo"/>
+    <div class="ndma-content">
+      <h1>National Disaster Management Authority</h1>
+      <h2>Government of India</h2>
+    </div>
+  </div>
+
+  <header class="site-header" style="position:relative;z-index:3;">
+    <div class="container header-inner">
+      <div class="brand"><a href="index.html">DISASTER.prep</a></div>
+      <div class="auth">
+        <a href="#" class="btn btn-logout" id="logout-btn">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Emergency Hero Section -->
+    <section class="emergency-hero">
+      <div class="emergency-hero-content">
+        <div class="emergency-hero-text">
+          <h1 class="emergency-title">
+            <span class="title-line">🚨 Emergency</span>
+            <span class="title-line highlight">Reporting System</span>
+          </h1>
+          <p class="emergency-subtitle">Report disasters quickly and accurately to help authorities respond effectively</p>
+          <div class="emergency-stats">
+            <div class="stat-badge">
+              <span class="stat-number" id="reports-today">0</span>
+              <span class="stat-text">Reports Today</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="response-time">--</span>
+              <span class="stat-text">Avg Response Time</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="active-alerts">0</span>
+              <span class="stat-text">Active Alerts</span>
+            </div>
+          </div>
+        </div>
+        <div class="emergency-hero-visual">
+          <div class="floating-emergency-cards">
+            <div class="floating-emergency-card" style="top: 20px; left: 20px; animation-delay: 0.2s;">
+              <div class="card-icon">📍</div>
+              <div class="card-text">Location</div>
+            </div>
+            <div class="floating-emergency-card" style="top: 80px; right: 30px; animation-delay: 0.4s;">
+              <div class="card-icon">📸</div>
+              <div class="card-text">Evidence</div>
+            </div>
+            <div class="floating-emergency-card" style="bottom: 40px; left: 50px; animation-delay: 0.6s;">
+              <div class="card-icon">⚡</div>
+              <div class="card-text">Quick Report</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Emergency Reporting Form -->
+    <section class="reporting-section">
+      <div class="reporting-container">
+        <div class="reporting-header">
+          <h2 class="reporting-title">Report a Disaster</h2>
+          <p class="reporting-subtitle">Provide accurate information to help emergency services respond quickly</p>
+        </div>
+
+        <form id="emergency-report-form" class="reporting-form">
+          <div class="form-section">
+            <h3 class="form-section-title">📍 Location Information</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Current Location</label>
+                <input id="location" class="form-input" required placeholder="Enter your current location" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Landmark</label>
+                <input id="landmark" class="form-input" placeholder="Nearby landmark or building" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">City/District</label>
+                <input id="city" class="form-input" required placeholder="Enter city or district" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">State</label>
+                <input id="state" class="form-input" required placeholder="Enter state" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="form-section-title">🌪️ Disaster Information</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Disaster Type</label>
+                <select id="disaster-type" class="form-input" required>
+                  <option value="">Select disaster type</option>
+                  <option value="landslide">Landslide</option>
+                  <option value="earthquake">Earthquake</option>
+                  <option value="flood">Flood</option>
+                  <option value="fire">Fire</option>
+                  <option value="storm">Storm/Cyclone</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Severity Level</label>
+                <select id="severity" class="form-input" required>
+                  <option value="">Select severity</option>
+                  <option value="low">Low - Minor damage</option>
+                  <option value="medium">Medium - Moderate damage</option>
+                  <option value="high">High - Significant damage</option>
+                  <option value="critical">Critical - Life threatening</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <textarea id="description" class="form-textarea" required placeholder="Describe what you observed in detail..." rows="4"></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="form-section-title">📸 Evidence & Documentation</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Upload Image</label>
+                <input id="image-upload" class="form-input" type="file" accept="image/*" />
+                <div class="file-info">Supported formats: JPG, PNG, GIF (Max 5MB)</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Additional Images</label>
+                <input id="additional-images" class="form-input" type="file" accept="image/*" multiple />
+                <div class="file-info">Upload multiple images if available</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="form-section-title">⏰ Time & Contact Information</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Date of Incident</label>
+                <input id="incident-date" class="form-input" type="date" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Time of Incident</label>
+                <input id="incident-time" class="form-input" type="time" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Your Name</label>
+                <input id="reporter-name" class="form-input" required placeholder="Enter your full name" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Contact Number</label>
+                <input id="contact-number" class="form-input" type="tel" required placeholder="Enter your phone number" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
+            <button type="submit" class="btn btn-primary">🚨 Submit Emergency Report</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Emergency Contacts Section -->
+    <section class="emergency-contacts-section">
+      <div class="contacts-container">
+        <h2 class="contacts-title">Emergency Contacts</h2>
+        <div class="contacts-grid">
+          <div class="contact-card">
+            <div class="contact-icon">🚔</div>
+            <div class="contact-info">
+              <h3>Police</h3>
+              <a href="tel:100" class="contact-number">100</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">🚒</div>
+            <div class="contact-info">
+              <h3>Fire Service</h3>
+              <a href="tel:101" class="contact-number">101</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">🚑</div>
+            <div class="contact-info">
+              <h3>Medical Emergency</h3>
+              <a href="tel:102" class="contact-number">102</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">🚁</div>
+            <div class="contact-info">
+              <h3>Ambulance</h3>
+              <a href="tel:108" class="contact-number">108</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">📞</div>
+            <div class="contact-info">
+              <h3>National Emergency</h3>
+              <a href="tel:112" class="contact-number">112</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">🏛️</div>
+            <div class="contact-info">
+              <h3>NDMA Helpline</h3>
+              <a href="tel:011-26701728" class="contact-number">011-26701728</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">© <span id="year6"></span> DISASTER.prep — Emergency Reporting System</footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year6').innerText = new Date().getFullYear();
+    
+    // Set current date and time
+    const now = new Date();
+    document.getElementById('incident-date').value = now.toISOString().split('T')[0];
+    document.getElementById('incident-time').value = now.toTimeString().slice(0, 5);
+
+    // Form submission
+    document.getElementById('emergency-report-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const reportData = {
+        id: Date.now(),
+        location: document.getElementById('location').value,
+        landmark: document.getElementById('landmark').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        disasterType: document.getElementById('disaster-type').value,
+        severity: document.getElementById('severity').value,
+        description: document.getElementById('description').value,
+        incidentDate: document.getElementById('incident-date').value,
+        incidentTime: document.getElementById('incident-time').value,
+        reporterName: document.getElementById('reporter-name').value,
+        contactNumber: document.getElementById('contact-number').value,
+        timestamp: new Date().toISOString()
+      };
+
+      // Store in localStorage
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      reports.push(reportData);
+      localStorage.setItem('dp_emergency_reports', JSON.stringify(reports));
+
+      alert('🚨 Emergency report submitted successfully! Authorities have been notified.');
+      clearForm();
+      updateStats();
+    });
+
+    function clearForm() {
+      document.getElementById('emergency-report-form').reset();
+      const now = new Date();
+      document.getElementById('incident-date').value = now.toISOString().split('T')[0];
+      document.getElementById('incident-time').value = now.toTimeString().slice(0, 5);
+    }
+
+    function updateStats() {
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      const today = new Date().toDateString();
+      const todayReports = reports.filter(r => new Date(r.timestamp).toDateString() === today);
+      
+      document.getElementById('reports-today').textContent = todayReports.length;
+      document.getElementById('active-alerts').textContent = reports.filter(r => r.severity === 'critical' || r.severity === 'high').length;
+    }
+
+    // Initialize stats
+    updateStats();
+  </script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DISASTER.prep — Reported Disasters</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NDMA Banner -->
+  <div class="ndma-banner">
+    <img src="ndmalogo.png" alt="NDMA Logo"/>
+    <div class="ndma-content">
+      <h1>National Disaster Management Authority</h1>
+      <h2>Government of India</h2>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand"><a href="index.html">🌍 DISASTER.prep</a></div>
+      <div class="auth">
+        <a href="#" class="btn btn-logout" id="logout-btn" style="display: none;">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Reported Hero Section -->
+    <section class="reported-hero">
+      <div class="reported-hero-content">
+        <div class="reported-hero-text">
+          <h1 class="reported-title">
+            <span class="title-line">Reported</span>
+            <span class="title-line highlight">Disasters</span>
+          </h1>
+          <p class="reported-subtitle">Stay informed about disaster reports and emergency alerts in your area</p>
+          <div class="reported-stats">
+            <div class="stat-badge">
+              <span class="stat-number" id="total-reports">0</span>
+              <span class="stat-text">Total Reports</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="active-alerts">0</span>
+              <span class="stat-text">Active Alerts</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="resolved-reports">0</span>
+              <span class="stat-text">Resolved</span>
+            </div>
+          </div>
+        </div>
+        <div class="reported-hero-visual">
+          <div class="floating-reported-cards">
+            <div class="floating-reported-card" style="top: 20px; left: 20px; animation-delay: 0.2s;">
+              <div class="card-icon">📊</div>
+              <div class="card-text">Analytics</div>
+            </div>
+            <div class="floating-reported-card" style="top: 80px; right: 30px; animation-delay: 0.4s;">
+              <div class="card-icon">🚨</div>
+              <div class="card-text">Alerts</div>
+            </div>
+            <div class="floating-reported-card" style="bottom: 40px; left: 50px; animation-delay: 0.6s;">
+              <div class="card-icon">📍</div>
+              <div class="card-text">Location</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter and Search Section -->
+    <section class="filter-section">
+      <div class="filter-container">
+        <div class="filter-header">
+          <h2 class="filter-title">Disaster Reports</h2>
+          <div class="filter-actions">
+            <button class="btn btn-secondary" onclick="refreshReports()">🔄 Refresh</button>
+            <button class="btn btn-primary" onclick="location.href='emergency.html'">📝 Report New</button>
+          </div>
+        </div>
+
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label class="filter-label">Filter by Type:</label>
+            <select id="disaster-filter" class="filter-select" onchange="filterReports()">
+              <option value="">All Disasters</option>
+              <option value="landslide">Landslide</option>
+              <option value="earthquake">Earthquake</option>
+              <option value="flood">Flood</option>
+              <option value="fire">Fire</option>
+              <option value="storm">Storm/Cyclone</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Filter by Severity:</label>
+            <select id="severity-filter" class="filter-select" onchange="filterReports()">
+              <option value="">All Severities</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Filter by Status:</label>
+            <select id="status-filter" class="filter-select" onchange="filterReports()">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="investigating">Investigating</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reports Display Section -->
+    <section class="reports-section">
+      <div class="reports-container">
+        <div class="reports-grid" id="reports-grid">
+          <!-- Reports will be populated here -->
+        </div>
+        
+        <div class="no-reports" id="no-reports" style="display: none;">
+          <div class="no-reports-content">
+            <div class="no-reports-icon">📋</div>
+            <h3>No Reports Found</h3>
+            <p>No disaster reports match your current filters.</p>
+            <button class="btn btn-primary" onclick="clearFilters()">Clear Filters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Report Detail Modal -->
+  <div id="report-modal" class="modal" style="display: none;">
+    <div class="modal-content report-modal-content">
+      <div class="modal-header">
+        <h3>Disaster Report Details</h3>
+        <button class="modal-close" onclick="hideReportModal()">&times;</button>
+      </div>
+      <div id="report-details" class="report-details">
+        <!-- Report details will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">© <span id="year-reported"></span> DISASTER.prep — Disaster Reports</footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year-reported').innerText = new Date().getFullYear();
+    
+    // Initialize authentication
+    initAuth();
+    
+    // Load and display reports
+    loadReports();
+    updateStats();
+
+    function loadReports() {
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      const grid = document.getElementById('reports-grid');
+      const noReports = document.getElementById('no-reports');
+      
+      grid.innerHTML = '';
+      
+      if (reports.length === 0) {
+        noReports.style.display = 'block';
+        grid.style.display = 'none';
+        return;
+      }
+      
+      noReports.style.display = 'none';
+      grid.style.display = 'grid';
+      
+      reports.forEach(report => {
+        const reportCard = document.createElement('div');
+        reportCard.className = 'report-card';
+        reportCard.innerHTML = `
+          <div class="report-card-header">
+            <div class="report-type-icon">${getDisasterIcon(report.disasterType)}</div>
+            <div class="report-header-info">
+              <h4>${report.disasterType.charAt(0).toUpperCase() + report.disasterType.slice(1)}</h4>
+              <span class="report-id">#${report.id}</span>
+            </div>
+            <div class="report-status">
+              <span class="status-badge pending">Pending</span>
+            </div>
+          </div>
+          
+          <div class="report-card-content">
+            <div class="report-location">
+              <span class="location-icon">📍</span>
+              <span>${report.city}, ${report.state}</span>
+            </div>
+            <div class="report-severity">
+              <span class="severity-badge ${report.severity}">${report.severity}</span>
+            </div>
+            <p class="report-description">${report.description}</p>
+            <div class="report-meta">
+              <span class="report-reporter">👤 ${report.reporterName}</span>
+              <span class="report-time">🕒 ${new Date(report.timestamp).toLocaleString()}</span>
+            </div>
+          </div>
+          
+          <div class="report-card-actions">
+            <button class="btn btn-outline" onclick="viewReportDetails(${report.id})">View Details</button>
+            <button class="btn btn-secondary" onclick="shareReport(${report.id})">Share</button>
+          </div>
+        `;
+        grid.appendChild(reportCard);
+      });
+    }
+
+    function getDisasterIcon(type) {
+      const icons = {
+        'landslide': '🏔️',
+        'earthquake': '🌍',
+        'flood': '🌊',
+        'fire': '🔥',
+        'storm': '⛈️',
+        'other': '⚠️'
+      };
+      return icons[type] || '⚠️';
+    }
+
+    function viewReportDetails(reportId) {
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      const report = reports.find(r => r.id === reportId);
+      
+      if (!report) return;
+      
+      const details = document.getElementById('report-details');
+      details.innerHTML = `
+        <div class="report-detail-section">
+          <h4>📍 Location Information</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Current Location:</label>
+              <span>${report.location}</span>
+            </div>
+            <div class="detail-item">
+              <label>Landmark:</label>
+              <span>${report.landmark || 'Not specified'}</span>
+            </div>
+            <div class="detail-item">
+              <label>City/District:</label>
+              <span>${report.city}</span>
+            </div>
+            <div class="detail-item">
+              <label>State:</label>
+              <span>${report.state}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="report-detail-section">
+          <h4>🌪️ Disaster Information</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Disaster Type:</label>
+              <span class="disaster-badge ${report.disasterType}">${report.disasterType}</span>
+            </div>
+            <div class="detail-item">
+              <label>Severity Level:</label>
+              <span class="severity-badge ${report.severity}">${report.severity}</span>
+            </div>
+            <div class="detail-item full-width">
+              <label>Description:</label>
+              <p>${report.description}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="report-detail-section">
+          <h4>⏰ Time & Contact Information</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Incident Date:</label>
+              <span>${report.incidentDate}</span>
+            </div>
+            <div class="detail-item">
+              <label>Incident Time:</label>
+              <span>${report.incidentTime}</span>
+            </div>
+            <div class="detail-item">
+              <label>Reporter Name:</label>
+              <span>${report.reporterName}</span>
+            </div>
+            <div class="detail-item">
+              <label>Contact Number:</label>
+              <span><a href="tel:${report.contactNumber}">${report.contactNumber}</a></span>
+            </div>
+            <div class="detail-item">
+              <label>Report Submitted:</label>
+              <span>${new Date(report.timestamp).toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="report-detail-section">
+          <h4>📸 Evidence</h4>
+          <div class="evidence-section">
+            <p class="evidence-note">Images and additional evidence would be displayed here if uploaded.</p>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('report-modal').style.display = 'flex';
+    }
+
+    function hideReportModal() {
+      document.getElementById('report-modal').style.display = 'none';
+    }
+
+    function shareReport(reportId) {
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      const report = reports.find(r => r.id === reportId);
+      
+      if (!report) return;
+      
+      const shareText = `Disaster Alert: ${report.disasterType} reported in ${report.city}, ${report.state}. Severity: ${report.severity}. Report #${report.id}`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'Disaster Alert',
+          text: shareText,
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(shareText).then(() => {
+          alert('Report details copied to clipboard!');
+        });
+      }
+    }
+
+    function filterReports() {
+      const disasterFilter = document.getElementById('disaster-filter').value;
+      const severityFilter = document.getElementById('severity-filter').value;
+      const statusFilter = document.getElementById('status-filter').value;
+      
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      let filteredReports = reports;
+      
+      if (disasterFilter) {
+        filteredReports = filteredReports.filter(r => r.disasterType === disasterFilter);
+      }
+      
+      if (severityFilter) {
+        filteredReports = filteredReports.filter(r => r.severity === severityFilter);
+      }
+      
+      // For now, all reports are "pending" status
+      if (statusFilter) {
+        filteredReports = filteredReports.filter(r => statusFilter === 'pending');
+      }
+      
+      // Update display with filtered results
+      displayFilteredReports(filteredReports);
+    }
+
+    function displayFilteredReports(reports) {
+      const grid = document.getElementById('reports-grid');
+      const noReports = document.getElementById('no-reports');
+      
+      grid.innerHTML = '';
+      
+      if (reports.length === 0) {
+        noReports.style.display = 'block';
+        grid.style.display = 'none';
+        return;
+      }
+      
+      noReports.style.display = 'none';
+      grid.style.display = 'grid';
+      
+      reports.forEach(report => {
+        const reportCard = document.createElement('div');
+        reportCard.className = 'report-card';
+        reportCard.innerHTML = `
+          <div class="report-card-header">
+            <div class="report-type-icon">${getDisasterIcon(report.disasterType)}</div>
+            <div class="report-header-info">
+              <h4>${report.disasterType.charAt(0).toUpperCase() + report.disasterType.slice(1)}</h4>
+              <span class="report-id">#${report.id}</span>
+            </div>
+            <div class="report-status">
+              <span class="status-badge pending">Pending</span>
+            </div>
+          </div>
+          
+          <div class="report-card-content">
+            <div class="report-location">
+              <span class="location-icon">📍</span>
+              <span>${report.city}, ${report.state}</span>
+            </div>
+            <div class="report-severity">
+              <span class="severity-badge ${report.severity}">${report.severity}</span>
+            </div>
+            <p class="report-description">${report.description}</p>
+            <div class="report-meta">
+              <span class="report-reporter">👤 ${report.reporterName}</span>
+              <span class="report-time">🕒 ${new Date(report.timestamp).toLocaleString()}</span>
+            </div>
+          </div>
+          
+          <div class="report-card-actions">
+            <button class="btn btn-outline" onclick="viewReportDetails(${report.id})">View Details</button>
+            <button class="btn btn-secondary" onclick="shareReport(${report.id})">Share</button>
+          </div>
+        `;
+        grid.appendChild(reportCard);
+      });
+    }
+
+    function clearFilters() {
+      document.getElementById('disaster-filter').value = '';
+      document.getElementById('severity-filter').value = '';
+      document.getElementById('status-filter').value = '';
+      loadReports();
+    }
+
+    function refreshReports() {
+      loadReports();
+      updateStats();
+      alert('Reports refreshed successfully!');
+    }
+
+    function updateStats() {
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      const criticalHigh = reports.filter(r => r.severity === 'critical' || r.severity === 'high');
+      
+      document.getElementById('total-reports').textContent = reports.length;
+      document.getElementById('active-alerts').textContent = criticalHigh.length;
+      document.getElementById('resolved-reports').textContent = 0; // For now, no resolved reports
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DISASTER.prep — Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+  <!-- NDMA Banner -->
+  <div class="ndma-banner">
+    <img src="ndmalogo.png" alt="NDMA Logo"/>
+    <div class="ndma-content">
+      <h1>National Disaster Management Authority</h1>
+      <h2>Government of India</h2>
+    </div>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="auth-title">Login</h1>
+      <p class="auth-subtitle">Sign in to your DISASTER.prep account</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button id="tab-student" class="auth-tab active">Student</button>
+      <button id="tab-institution" class="auth-tab">Institution</button>
+      <button id="tab-admin" class="auth-tab">Admin</button>
+    </div>
+
+    <!-- Login Forms Container -->
+    <div class="login-forms">
+      <!-- Student Login Form -->
+      <form id="student-login-form" class="auth-form login-form">
+        <div class="form-group">
+          <label class="form-label">Student ID</label>
+          <input id="student-login-id" class="form-input" required placeholder="Enter your student ID" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input id="student-login-password" class="form-input" type="password" required placeholder="Enter your password" autocomplete="current-password" />
+        </div>
+
+        <button class="auth-submit" type="submit">Sign In as Student</button>
+      </form>
+
+      <!-- Institution Login Form -->
+      <form id="institution-login-form" class="auth-form login-form" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Institution ID</label>
+          <input id="institution-login-id" class="form-input" required placeholder="Enter institution ID" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input id="institution-login-password" class="form-input" type="password" required placeholder="Enter your password" autocomplete="current-password" />
+        </div>
+
+        <button class="auth-submit" type="submit">Sign In as Institution</button>
+      </form>
+
+      <!-- Admin Login Form -->
+      <form id="admin-login-form" class="auth-form login-form" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Admin ID</label>
+          <input id="admin-login-id" class="form-input" required placeholder="Enter admin ID" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input id="admin-login-password" class="form-input" type="password" required placeholder="Enter your password" autocomplete="current-password" />
+        </div>
+
+        <button class="auth-submit" type="submit">Sign In as Admin</button>
+      </form>
+    </div>
+
+    <div class="auth-link">
+      Not registered? <a href="registration.html">Create an account</a>
+    </div>
+    
+    <div class="home-button-container">
+      <a href="index.html" class="btn-home">🏠 Home</a>
+    </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    document.getElementById("tab-student").addEventListener("click", function(){
+      setActiveTab("tab-student");
+      showForm("student-login-form");
+    });
+
+    document.getElementById("tab-institution").addEventListener("click", function(){
+      setActiveTab("tab-institution");
+      showForm("institution-login-form");
+    });
+
+    document.getElementById("tab-admin").addEventListener("click", function(){
+      setActiveTab("tab-admin");
+      showForm("admin-login-form");
+    });
+
+    function setActiveTab(id){
+      document.querySelectorAll(".auth-tab").forEach(btn => btn.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function showForm(formId){
+      document.querySelectorAll(".login-form").forEach(form => form.style.display = "none");
+      document.getElementById(formId).style.display = "block";
+    }
+
+    // Student Login form submission
+    document.getElementById('student-login-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const studentId = document.getElementById('student-login-id').value.trim();
+      const password = document.getElementById('student-login-password').value.trim();
+
+      if(!studentId){ alert('Enter your Student ID'); return; }
+      if(!password){ alert('Enter your password'); return; }
+
+      const user = { id: Date.now(), studentId, role: "student", password };
+      localStorage.setItem('dp_user', JSON.stringify(user));
+
+      alert('Logged in as Student ID: ' + studentId + ' — Welcome!');
+      location.href = 'students.html';
+    });
+
+    // Institution Login form submission
+    document.getElementById('institution-login-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const institutionId = document.getElementById('institution-login-id').value.trim();
+      const password = document.getElementById('institution-login-password').value.trim();
+
+      if(!institutionId){ alert('Enter your Institution ID'); return; }
+      if(!password){ alert('Enter your password'); return; }
+
+      const user = { id: Date.now(), institutionId, role: "institution", password };
+      localStorage.setItem('dp_user', JSON.stringify(user));
+
+      alert('Logged in as Institution ID: ' + institutionId + ' — Welcome!');
+      location.href = 'institution.html';
+    });
+
+    // Admin Login form submission
+    document.getElementById('admin-login-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const adminId = document.getElementById('admin-login-id').value.trim();
+      const password = document.getElementById('admin-login-password').value.trim();
+
+      if(!adminId){ alert('Enter your Admin ID'); return; }
+      if(!password){ alert('Enter your password'); return; }
+
+      const user = { id: Date.now(), adminId, role: "admin", password };
+      localStorage.setItem('dp_user', JSON.stringify(user));
+
+      alert('Logged in as Admin ID: ' + adminId + ' — Welcome!');
+      location.href = 'admin.html';
+    });
+  </script>
+</body>
+</html>

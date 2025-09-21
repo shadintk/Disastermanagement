@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DISASTER.prep — Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NDMA Banner -->
+  <div class="ndma-banner">
+    <img src="ndmalogo.png" alt="NDMA Logo"/>
+    <div class="ndma-content">
+      <h1>National Disaster Management Authority</h1>
+      <h2>Government of India</h2>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand"><a href="index.html">DISASTER.prep</a></div>
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html">Home</a>
+        <a href="admin.html" class="active">Admin Dashboard</a>
+        <a href="institution.html">Institution Portal</a>
+        <a href="students.html">Student Portal</a>
+        <a href="reported.html">Reported</a>
+      </nav>
+      <div class="auth">
+        <a href="reported.html" class="btn btn-outline" id="reported-btn">📊 Reported Details</a>
+        <a href="login.html" class="btn btn-login" id="login-btn">Login</a>
+        <a href="registration.html" class="btn btn-register" id="register-btn">Register</a>
+        <a href="#" class="btn btn-logout" id="logout-btn" style="display: none;">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Admin Hero Section -->
+    <section class="admin-hero">
+      <div class="admin-hero-content">
+        <div class="admin-hero-text">
+          <h1 class="admin-title">
+            <span class="title-line">Admin</span>
+            <span class="title-line highlight">Dashboard</span>
+          </h1>
+          <p class="admin-subtitle">Monitor system performance, manage users, and oversee disaster preparedness operations</p>
+          <div class="admin-stats">
+            <div class="stat-badge">
+              <span class="stat-number" id="admin-avg">--%</span>
+              <span class="stat-text">Avg Preparedness</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="admin-students">--</span>
+              <span class="stat-text">Students Registered</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="admin-drills">--</span>
+              <span class="stat-text">Drills Scheduled</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="admin-emergencies">0</span>
+              <span class="stat-text">Emergency Reports</span>
+            </div>
+          </div>
+        </div>
+        <div class="admin-hero-visual">
+          <div class="floating-admin-cards">
+            <div class="floating-admin-card" style="top: 20px; left: 20px; animation-delay: 0.2s;">
+              <div class="card-icon">📊</div>
+              <div class="card-text">Analytics</div>
+            </div>
+            <div class="floating-admin-card" style="top: 80px; right: 30px; animation-delay: 0.4s;">
+              <div class="card-icon">👥</div>
+              <div class="card-text">Users</div>
+            </div>
+            <div class="floating-admin-card" style="bottom: 40px; left: 50px; animation-delay: 0.6s;">
+              <div class="card-icon">⚙️</div>
+              <div class="card-text">Settings</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section class="admin-actions-section">
+      <div class="admin-actions-container">
+        <h2 class="admin-actions-title">System Management</h2>
+        <div class="admin-actions-grid">
+          <div class="admin-action-card" onclick="location.href='emergency.html'">
+            <div class="admin-action-icon">🚨</div>
+            <div class="admin-action-content">
+              <h3>Emergency Management</h3>
+              <p>Monitor and respond to emergency reports</p>
+            </div>
+          </div>
+          <div class="admin-action-card" onclick="showUserManagement()">
+            <div class="admin-action-icon">👥</div>
+            <div class="admin-action-content">
+              <h3>User Management</h3>
+              <p>Manage students, teachers, and institutions</p>
+            </div>
+          </div>
+          <div class="admin-action-card" onclick="showSystemAnalytics()">
+            <div class="admin-action-icon">📈</div>
+            <div class="admin-action-content">
+              <h3>System Analytics</h3>
+              <p>View detailed performance metrics</p>
+            </div>
+          </div>
+          <div class="admin-action-card" onclick="exportData()">
+            <div class="admin-action-icon">📤</div>
+            <div class="admin-action-content">
+              <h3>Export Data</h3>
+              <p>Export reports and user data</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Management Section -->
+    <section class="data-management-section">
+      <div class="data-container">
+        <div class="data-header">
+          <h2 class="data-title">Data Management</h2>
+          <div class="data-actions">
+            <button class="btn btn-secondary" onclick="refreshData()">🔄 Refresh</button>
+            <button class="btn btn-primary" onclick="exportAllData()">📊 Export All</button>
+          </div>
+        </div>
+
+        <div class="data-tabs">
+          <button class="data-tab active" onclick="showDataTab('results')">Drill Results</button>
+          <button class="data-tab" onclick="showDataTab('emergencies')">Emergency Reports</button>
+          <button class="data-tab" onclick="showDataTab('users')">User Data</button>
+          <button class="data-tab" onclick="showDataTab('system')">System Logs</button>
+        </div>
+
+        <div id="results-data" class="data-content">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student</th>
+                  <th>Drill Type</th>
+                  <th>Score</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="results-table-body">
+                <!-- Results will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="emergencies-data" class="data-content" style="display: none;">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Report ID</th>
+                  <th>Reporter</th>
+                  <th>Disaster Type</th>
+                  <th>Severity</th>
+                  <th>Location</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="emergencies-table-body">
+                <!-- Emergency reports will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="users-data" class="data-content" style="display: none;">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Institution</th>
+                  <th>Registration Date</th>
+                  <th>Last Active</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body">
+                <!-- Users will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="system-data" class="data-content" style="display: none;">
+          <div class="system-logs">
+            <div class="log-entry">
+              <span class="log-time">2024-01-15 10:30:00</span>
+              <span class="log-level info">INFO</span>
+              <span class="log-message">System initialized successfully</span>
+            </div>
+            <div class="log-entry">
+              <span class="log-time">2024-01-15 10:31:15</span>
+              <span class="log-level success">SUCCESS</span>
+              <span class="log-message">User authentication service started</span>
+            </div>
+            <div class="log-entry">
+              <span class="log-time">2024-01-15 10:32:00</span>
+              <span class="log-level warning">WARNING</span>
+              <span class="log-message">High memory usage detected</span>
+            </div>
+            <div class="log-entry">
+              <span class="log-time">2024-01-15 10:33:45</span>
+              <span class="log-level error">ERROR</span>
+              <span class="log-message">Database connection timeout</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">© <span id="year5"></span> DISASTER.prep — Admin Dashboard</footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year5').innerText = new Date().getFullYear();
+    
+    // Initialize admin dashboard
+    renderAdmin();
+    loadEmergencyReports();
+    loadUserData();
+
+    function showDataTab(tab) {
+      // Hide all content
+      document.querySelectorAll('.data-content').forEach(content => content.style.display = 'none');
+      document.querySelectorAll('.data-tab').forEach(tab => tab.classList.remove('active'));
+      
+      // Show selected content
+      document.getElementById(tab + '-data').style.display = 'block';
+      event.target.classList.add('active');
+    }
+
+    function loadEmergencyReports() {
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      const tbody = document.getElementById('emergencies-table-body');
+      tbody.innerHTML = '';
+      
+      if (reports.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="no-data">No emergency reports found</td></tr>';
+        return;
+      }
+      
+      reports.forEach(report => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${report.id}</td>
+          <td>${report.reporterName}</td>
+          <td><span class="disaster-badge ${report.disasterType}">${report.disasterType}</span></td>
+          <td><span class="severity-badge ${report.severity}">${report.severity}</span></td>
+          <td>${report.city}, ${report.state}</td>
+          <td>${new Date(report.timestamp).toLocaleString()}</td>
+          <td><span class="status-badge pending">Pending</span></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function loadUserData() {
+      const users = [];
+      
+      // Load students
+      const students = JSON.parse(localStorage.getItem('dp_students') || '[]');
+      students.forEach(student => {
+        users.push({
+          id: student.id,
+          name: student.name,
+          role: 'Student',
+          institution: student.institutionId || 'N/A',
+          regDate: new Date(student.timestamp || Date.now()).toLocaleDateString(),
+          lastActive: 'Today'
+        });
+      });
+      
+      // Load institutions
+      const institutions = JSON.parse(localStorage.getItem('dp_institutions') || '[]');
+      institutions.forEach(inst => {
+        users.push({
+          id: inst.id,
+          name: inst.name,
+          role: 'Institution',
+          institution: inst.institutionId || 'N/A',
+          regDate: new Date(inst.timestamp || Date.now()).toLocaleDateString(),
+          lastActive: 'Today'
+        });
+      });
+      
+      const tbody = document.getElementById('users-table-body');
+      tbody.innerHTML = '';
+      
+      if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="no-data">No users found</td></tr>';
+        return;
+      }
+      
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${user.id}</td>
+          <td>${user.name}</td>
+          <td><span class="role-badge ${user.role.toLowerCase()}">${user.role}</span></td>
+          <td>${user.institution}</td>
+          <td>${user.regDate}</td>
+          <td>${user.lastActive}</td>
+          <td>
+            <button class="btn btn-outline" onclick="viewUser(${user.id})">View</button>
+            <button class="btn btn-danger" onclick="deleteUser(${user.id})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function refreshData() {
+      renderAdmin();
+      loadEmergencyReports();
+      loadUserData();
+      alert('Data refreshed successfully!');
+    }
+
+    function exportAllData() {
+      const results = JSON.parse(localStorage.getItem('dp_results') || '[]');
+      const reports = JSON.parse(localStorage.getItem('dp_emergency_reports') || '[]');
+      
+      if (results.length === 0 && reports.length === 0) {
+        alert('No data to export');
+        return;
+      }
+      
+      let csv = 'Type,ID,Name,Score,Date\n';
+      
+      // Export drill results
+      results.forEach(r => {
+        csv += `Drill Result,${r.id},${r.name || 'Unknown'},${r.score},${r.timestamp}\n`;
+      });
+      
+      // Export emergency reports
+      reports.forEach(r => {
+        csv += `Emergency Report,${r.id},${r.reporterName},${r.severity},${r.timestamp}\n`;
+      });
+      
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'disasterprep_all_data.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportData() {
+      exportAllData();
+    }
+
+    function showUserManagement() {
+      showDataTab('users');
+    }
+
+    function showSystemAnalytics() {
+      alert('Advanced analytics coming soon!');
+    }
+
+    function viewUser(id) {
+      alert(`Viewing user ${id} details`);
+    }
+
+    function deleteUser(id) {
+      if (confirm('Are you sure you want to delete this user?')) {
+        alert(`User ${id} deleted`);
+        loadUserData();
+      }
+    }
+    
+    // Initialize authentication
+    initAuth();
+    
+    // Hide navigation when logged in as admin
+    const user = JSON.parse(localStorage.getItem('dp_user') || 'null');
+    if (user && user.role === 'admin') {
+      document.getElementById('main-nav').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

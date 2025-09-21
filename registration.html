@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DISASTER.prep — Registration</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="register-page">
+  <!-- NDMA Banner -->
+  <div class="ndma-banner">
+    <img src="ndmalogo.png" alt="NDMA Logo"/>
+    <div class="ndma-content">
+      <h1>National Disaster Management Authority</h1>
+      <h2>Government of India</h2>
+    </div>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="auth-title">Registration</h1>
+      <p class="auth-subtitle">Create your account to get started</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button id="tab-student" class="auth-tab active">Student</button>
+      <button id="tab-institution" class="auth-tab">Institution</button>
+    </div>
+    <!-- Registration Forms Container -->
+    <div class="registration-forms">
+      <!-- Student Registration Form -->
+      <form id="student-form" class="auth-form registration-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Student Name</label>
+            <input id="student-name" class="form-input" required placeholder="Enter full name" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Student ID</label>
+            <input id="student-id" class="form-input" required placeholder="Enter student ID" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Institution ID</label>
+            <input id="student-institution-id" class="form-input" required placeholder="Enter institution ID" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Create Password</label>
+            <input id="student-password" class="form-input" type="password" required placeholder="Create password" autocomplete="new-password" />
+          </div>
+        </div>
+
+        <button class="auth-submit" type="submit">Create Student Account</button>
+      </form>
+
+      <!-- Institution Registration Form -->
+      <form id="institution-form" class="auth-form registration-form" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Institution Name</label>
+            <input id="inst-name" class="form-input" required placeholder="Enter institution name" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Institution ID</label>
+            <input id="inst-id" class="form-input" required placeholder="Enter institution ID" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Create Password</label>
+            <input id="inst-password" class="form-input" type="password" required placeholder="Create password" autocomplete="new-password" />
+          </div>
+
+          <div class="form-group">
+            <!-- Empty div for spacing -->
+          </div>
+        </div>
+
+        <button class="auth-submit" type="submit">Create Institution Account</button>
+      </form>
+    </div>
+
+    <div class="auth-link">
+      Already registered? <a href="login.html">Login here</a>
+    </div>
+    
+    <div class="home-button-container">
+      <a href="index.html" class="btn-home">🏠 Home</a>
+    </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year7').innerText = new Date().getFullYear();
+
+    // Tab switching
+    document.getElementById("tab-student").addEventListener("click", function(){
+      setActiveTab("tab-student");
+      document.getElementById("student-form").style.display = "block";
+      document.getElementById("institution-form").style.display = "none";
+    });
+
+    document.getElementById("tab-institution").addEventListener("click", function(){
+      setActiveTab("tab-institution");
+      document.getElementById("student-form").style.display = "none";
+      document.getElementById("institution-form").style.display = "block";
+    });
+
+    function setActiveTab(id){
+      document.querySelectorAll(".auth-tabs button").forEach(btn => btn.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // Student registration
+    document.getElementById("student-form").addEventListener("submit", function(e){
+      e.preventDefault();
+      const student = {
+        role: "student",
+        name: document.getElementById("student-name").value.trim(),
+        id: document.getElementById("student-id").value.trim(),
+        institutionId: document.getElementById("student-institution-id").value.trim(),
+        password: document.getElementById("student-password").value.trim()
+      };
+      localStorage.setItem("student_" + student.id, JSON.stringify(student));
+      alert("Student registered successfully! Please login to continue.");
+      location.href = "login.html";
+    });
+
+    // Institution registration
+    document.getElementById("institution-form").addEventListener("submit", function(e){
+      e.preventDefault();
+      const inst = {
+        role: "institution",
+        name: document.getElementById("inst-name").value.trim(),
+        id: document.getElementById("inst-id").value.trim(),
+        password: document.getElementById("inst-password").value.trim()
+      };
+      localStorage.setItem("institution_" + inst.id, JSON.stringify(inst));
+      alert("Institution registered successfully! Please login to continue.");
+      location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

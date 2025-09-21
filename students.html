@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DISASTER.prep — Student Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- NDMA Banner -->
+  <div class="ndma-banner">
+    <img src="ndmalogo.png" alt="NDMA Logo"/>
+    <div class="ndma-content">
+      <h1>National Disaster Management Authority</h1>
+      <h2>Government of India</h2>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">DISASTER.prep</div>
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html">Home</a>
+        <a href="students.html" class="active">Students</a>
+        <a href="institution.html">Institution Portal</a>
+        <a href="admin.html">Admin Dashboard</a>
+        <a href="reported.html">Reported</a>
+        <a href="emergency.html" class="danger-link">🚨 Emergency</a>
+      </nav>
+      <div class="auth">
+        <a href="reported.html" class="btn btn-outline" id="reported-btn">📊 Reported Details</a>
+        <a href="login.html" class="btn btn-login" id="login-btn">Login</a>
+        <a href="registration.html" class="btn btn-register" id="register-btn">Register</a>
+        <a href="#" class="btn btn-logout" id="logout-btn" style="display: none;">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="student-hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1 class="hero-title">
+            <span class="title-line">Student</span>
+            <span class="title-line highlight">Learning Portal</span>
+          </h1>
+          <p class="hero-subtitle">Master disaster preparedness through interactive modules, virtual drills, and comprehensive training</p>
+          <div class="hero-stats">
+            <div class="stat-badge">
+              <span class="stat-number" id="my-score">--%</span>
+              <span class="stat-text">Preparedness Score</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="modules-completed">0</span>
+              <span class="stat-text">Modules Completed</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="drills-completed">0</span>
+              <span class="stat-text">Drills Completed</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="floating-cards">
+            <div class="floating-card" style="top: 20px; left: 20px; animation-delay: 0.2s;">
+              <div class="card-icon">📚</div>
+              <div class="card-text">Learning</div>
+            </div>
+            <div class="floating-card" style="top: 80px; right: 30px; animation-delay: 0.4s;">
+              <div class="card-icon">🧑‍🚒</div>
+              <div class="card-text">Drills</div>
+            </div>
+            <div class="floating-card" style="bottom: 40px; left: 50px; animation-delay: 0.6s;">
+              <div class="card-icon">🏆</div>
+              <div class="card-text">Achievements</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning Modules Section -->
+    <section class="modules-section">
+      <div class="section-header">
+        <h2>📚 Learning Modules</h2>
+        <p class="section-subtitle">Interactive video-based learning with comprehensive quizzes</p>
+      </div>
+      <div class="modules-grid">
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">🌎</div>
+            <h3>Earthquake Safety</h3>
+          </div>
+          <div class="video-container">
+            <iframe 
+              src="https://www.youtube.com/embed/1qQqHn2L0Tg?rel=0&modestbranding=1&showinfo=0&controls=1" 
+              allowfullscreen
+              title="Earthquake Safety Video">
+            </iframe>
+            <div class="video-fallback">
+              <p>📺 Video not available? <a href="https://www.youtube.com/watch?v=BLEPakj1YTY" target="_blank">Watch on YouTube</a></p>
+            </div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Learn the Drop, Cover, and Hold On technique for earthquake safety.</p>
+            <button class="btn btn-primary quiz-btn" onclick="startQuiz('earthquake')">
+              <span>Take Quiz</span>
+              <div class="btn-arrow">→</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">💧</div>
+            <h3>Flood Preparedness</h3>
+          </div>
+          <div class="video-container">
+            <iframe 
+              src="https://www.youtube.com/embed/5hghT1W33cY?rel=0&modestbranding=1&showinfo=0&controls=1" 
+              allowfullscreen
+              title="Flood Preparedness Video">
+            </iframe>
+            <div class="video-fallback">
+              <p>📺 Video not available? <a href="https://www.youtube.com/watch?v=43M5mZuzHF8" target="_blank">Watch on YouTube</a></p>
+            </div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Essential flood safety tips and evacuation procedures.</p>
+            <button class="btn btn-primary quiz-btn" onclick="startQuiz('flood')">
+              <span>Take Quiz</span>
+              <div class="btn-arrow">→</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">🔥</div>
+            <h3>Fire Safety</h3>
+          </div>
+          <div class="video-container">
+            <iframe 
+              src="https://www.youtube.com/embed/5hghT1W33cY?rel=0&modestbranding=1&showinfo=0&controls=1" 
+              allowfullscreen
+              title="Fire Safety in Schools Video">
+            </iframe>
+            <div class="video-fallback">
+              <p>📺 Video not available? <a href="https://www.youtube.com/watch?v=ReL-DM9xhpI" target="_blank">Watch on YouTube</a></p>
+            </div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">School fire safety procedures and evacuation plans.</p>
+            <button class="btn btn-primary quiz-btn" onclick="startQuiz('fire')">
+              <span>Take Quiz</span>
+              <div class="btn-arrow">→</div>
+            </button>
+          </div>
+      </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">🏔️</div>
+            <h3>Landslide Safety</h3>
+          </div>
+          <div class="video-container">
+            <iframe 
+              src="https://www.youtube.com/embed/5hghT1W33cY?rel=0&modestbranding=1&showinfo=0&controls=1" 
+              allowfullscreen
+              title="Landslide Safety Video">
+            </iframe>
+            <div class="video-fallback">
+              <p>📺 Video not available? <a href="https://www.youtube.com/watch?v=M07Cirl1wkM" target="_blank">Watch on YouTube</a></p>
+            </div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Learn about landslide warning signs and safety procedures.</p>
+            <button class="btn btn-primary quiz-btn" onclick="startQuiz('landslide')">
+              <span>Take Quiz</span>
+              <div class="btn-arrow">→</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Virtual Drill Section -->
+    <section class="drill-section">
+      <div class="section-header">
+        <h2>🧑‍🚒 Virtual Drill Simulation</h2>
+        <p class="section-subtitle">Practice emergency procedures in a safe, controlled environment</p>
+      </div>
+      <div class="drill-container">
+        <div class="drill-card">
+          <div class="drill-header">
+            <div class="drill-icon">🎯</div>
+            <h3>Select Drill Type</h3>
+          </div>
+          <div class="drill-content">
+            <select id="drill-type" class="drill-select">
+          <option value="earthquake">Earthquake — Classroom Drill</option>
+          <option value="flood">Flood — Evacuation Drill</option>
+          <option value="fire">Fire — Extinguish & Exit Drill</option>
+          <option value="landslide">Landslide — Safety Drill</option>
+        </select>
+            <button id="start-drill" class="btn btn-primary">
+              <span>Start Drill</span>
+              <div class="btn-arrow">→</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard Section -->
+    <section class="leaderboard-section">
+      <div class="section-header">
+        <h2>🏆 Class Leaderboard</h2>
+        <p class="section-subtitle">See how you rank among your classmates</p>
+      </div>
+      <div class="leaderboard-container">
+        <div class="leaderboard-card">
+          <div class="leaderboard-header">
+            <h3>Top Performers</h3>
+            <div class="leaderboard-stats">
+              <span class="stat">Total Students: <span id="total-students">0</span></span>
+            </div>
+          </div>
+          <div class="leaderboard-content">
+        <table id="leaderboard">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Name</th>
+                  <th>Score</th>
+                  <th>Drills</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+        </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Emergency Contacts Section -->
+    <section class="emergency-section">
+      <div class="section-header">
+        <h2>🚨 Emergency Contacts</h2>
+        <p class="section-subtitle">Quick access to emergency services and resources</p>
+      </div>
+      <div class="emergency-container">
+        <div class="emergency-card">
+          <div class="emergency-header">
+            <div class="emergency-icon">📞</div>
+            <h3>Emergency Services</h3>
+          </div>
+          <div class="emergency-contacts">
+            <div class="contact-item">
+              <i class="fa fa-phone"></i>
+              <span class="contact-label">Police</span>
+              <span class="contact-number">100</span>
+            </div>
+            <div class="contact-item">
+              <i class="fa fa-fire"></i>
+              <span class="contact-label">Fire</span>
+              <span class="contact-number">101</span>
+            </div>
+            <div class="contact-item">
+              <i class="fa fa-ambulance"></i>
+              <span class="contact-label">Ambulance</span>
+              <span class="contact-number">102</span>
+            </div>
+            <div class="contact-item">
+              <i class="fa fa-life-ring"></i>
+              <span class="contact-label">Disaster Helpline</span>
+              <span class="contact-number">108</span>
+            </div>
+          </div>
+          <a class="btn btn-danger" href="emergency.html">
+            <span>Open Emergency Mode</span>
+            <div class="btn-arrow">→</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    © <span id="year"></span> DisasterPrep — Together for Safety
+  </footer>
+
+  <!-- Quiz Modal -->
+  <div id="quiz-modal" class="quiz-modal">
+    <div class="quiz-content">
+      <div class="quiz-header">
+        <h3 id="quiz-title">Module Quiz</h3>
+        <span class="close-quiz" onclick="closeQuiz()">&times;</span>
+      </div>
+      <div class="quiz-body">
+        <div id="quiz-progress">
+          <div class="progress-bar">
+            <div id="progress-fill"></div>
+          </div>
+          <p id="question-counter">Question 1 of 5</p>
+        </div>
+        <div id="quiz-question">
+          <h4 id="question-text">Loading question...</h4>
+          <div id="quiz-options"></div>
+        </div>
+        <div id="quiz-feedback" class="quiz-feedback"></div>
+        <div class="quiz-actions">
+          <button id="next-question" class="btn" onclick="nextQuestion()" style="display: none;">Next Question</button>
+          <button id="finish-quiz" class="btn" onclick="finishQuiz()" style="display: none;">Finish Quiz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Initialize authentication
+    initAuth();
+    
+    // Hide navigation when logged in as student
+    const user = JSON.parse(localStorage.getItem('dp_user') || 'null');
+    if (user && user.role === 'student') {
+      document.getElementById('main-nav').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
